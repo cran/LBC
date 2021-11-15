@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>my-vignette</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">my-vignette</h1>
+
+
+
+<div id="vignettes-for-lbc" class="section level1">
+<h1>Vignettes for LBC</h1>
+<p><strong>Haoxue Wang, Li Xing, Xuekui Zhang, Igor Burstyn, Paul Gustafson</strong></p>
+<div id="introduction" class="section level3">
+<h3>Introduction</h3>
+<p>This package includes key functions in LBC(logistic Box–Cox regression) model and a NHANES Dataset to test the model.</p>
+<p>There are three major benefits of using the LBC model. First of all, compared with the logistic regression model, the LBC model has flexibility in estimating the non-linear relationship between the log-odds and exposure via a shape parameter. It can accommodate a wide range of non-linear shapes. Thus, it is superior to the common two-step approach, which adds a data transformation step before fitting a logistic regression model to accommodate any non-linearity in the disease-exposure relationship. Second, the LBC model helps us design future studies. For instance, we can estimate the sample size based on a desired accuracy of the shape parameter estimator, using prior knowledge regarding the strength of association, disease prevalence, exposure skewness, and apparent pattern of non-linearity. Third, as a by-product of the LBC model, the median effect represents the gradient measurement over the entire distribution of the predictor with respect to a generalized scale, which facilitates the interpretation of this non-linear model.</p>
+</div>
+<div id="the-main-function" class="section level3">
+<h3>The main function</h3>
+<p><strong>myfit.prof()</strong> for estimates the LBC model parameter.</p>
+<p><strong>LogLikeFun()</strong> for caculating the log-likelihood value for Maximum Likelihood Estimates in LBC model.</p>
+<p><strong>ScoreFun()</strong> for caculating the gradient value for Maximum Likelihood Estimates in LBC model.</p>
+<p><strong>HessFun()</strong> for calculating the Hessian matrix.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(LBC)</span></code></pre></div>
+<div id="here-we-give-an-example-to-show-that-lbc-model-outperforms-logistic-linear-models-based-on-the-nhanes-dataset." class="section level4">
+<h4>Here we give an example to show that LBC model outperforms logistic linear models based on the NHANES dataset.</h4>
+<p>firstly we library all the packages we need</p>
+<pre><code>library(survey)
+library(maxLik)
+#library(ggplot2)
+library(MASS)</code></pre>
+<p>We analyze data from the National Health and Nutrition Examination Survey (NHANES) 2009–2010, which involved 8,893 adults aged 20 and over with complete records in depression and blood mercury measurements. The exposure variable, X, is the total blood mercury in micrograms per litre (𝜇g/L), and the binary outcome for depression, Y, is dichotomized from the score of the Patient Health Questionnaire-9 (PHQ-9) with 0 indicating no depression (a PHQ-9 score ≤ 9) and 1 indicating depression (a PHQ-9 score ≥ 10). We controlled for potential confounding associated with demographic and socioeconomic characteristics and dietary intake, Z, where Z contains the following covariates: age, gender, ethnicity, quintiles of family income-to-poverty ratio, education levels, marital status, smoking status, self-reported drinking status, body mass index, self-reported fish or shellfish intake in the past 30 days.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mydata <span class="ot">&lt;-</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">subset</span>(<span class="fu">read.csv</span>(<span class="st">&quot;Data/n05_08.csv&quot;</span>, <span class="at">as.is =</span> T), <span class="sc">!</span><span class="fu">is.na</span>(wtdrd14yr))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># returns a value of true and false for each value in a data set.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mydata) <span class="ot">&lt;-</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">tolower</span>(<span class="fu">colnames</span>(mydata)) <span class="co"># convert the uppercase letters of string to lowercase string</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mydata)  <span class="co"># display the first n rows present in the input data</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(mydata)   <span class="co"># returns the dimension (e.g. the number of columns and rows) of a matrix</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># transformed exposure variable</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>lbxthg.id <span class="ot">&lt;-</span> (mydata<span class="sc">$</span>lbxthg <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>lbxthg.sqrt <span class="ot">&lt;-</span> (<span class="fu">sqrt</span>(mydata<span class="sc">$</span>lbxthg) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="fl">0.5</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>lbxthg.log <span class="ot">&lt;-</span> <span class="fu">log</span>(mydata<span class="sc">$</span>lbxthg)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>lbxthg.sq <span class="ot">&lt;-</span> ((mydata<span class="sc">$</span>lbxthg) <span class="sc">^</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="dv">2</span></span></code></pre></div>
+<p>Because NHANES is conducted using a complex sampling design, the statistical methods based on simple random sampling can introduce bias for population level parameter estimates. Instead we employed sampling-weighted statistics and incorporated sampling weights in the regular models to achieve estimates that should better represent the population (Lumley, 2011)</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the sample design</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>mysubdata <span class="ot">&lt;-</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">subset</span>(mydata, (ridageyr <span class="sc">&gt;=</span> <span class="dv">20</span>) <span class="sc">&amp;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>             (<span class="sc">!</span><span class="fu">is.na</span>(mydata<span class="sc">$</span>depr_bi2)) <span class="sc">&amp;</span> (<span class="sc">!</span><span class="fu">is.na</span>(mydata<span class="sc">$</span>lbxthg)))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>mysub <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id =</span>  <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">weights =</span>  <span class="sc">~</span> wtdrd14yr,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> mysubdata)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># id:Formula or data frame specifying cluster ids from largest level to smallest level</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ~0 or ~1 is a formula for no clusters.</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># weights: specify sampling weights as an alternative to prob</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternative definition</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="do">##mydesign &lt;- svydesign(id=~1, weights=~wtdrd14yr,  data = mydata)</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="do">##mysub2 &lt;- subset(mydesign, (ridageyr&gt;=20)&amp;(!is.na(mydata$depr_bi2))&amp;(!is.na(mydata$lbxthg)))</span></span></code></pre></div>
+<p>Calculate the weighted mean and the weighted variance</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>myu <span class="ot">&lt;-</span> <span class="fu">svymean</span>(<span class="sc">~</span> <span class="fu">log</span>(lbxthg), mysub)[<span class="dv">1</span>]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>mysigma <span class="ot">&lt;-</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">sqrt</span>(<span class="fu">svyvar</span>(<span class="sc">~</span> <span class="fu">log</span>(lbxthg), mysub))[<span class="dv">1</span>] <span class="co"># the design is mysub</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>myXX <span class="ot">=</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>lbxthg <span class="co">#</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>UpperBound <span class="ot">=</span> <span class="dv">2</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>NoOFIni <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>myseq <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, UpperBound, <span class="at">length =</span> NoOFIni)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>myAIC <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, NoOFIni)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>NoOFIni)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>   lambda0 <span class="ot">=</span> myseq[ii]</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>   <span class="cf">if</span> (lambda0 <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>      myV0 <span class="ot">&lt;-</span> <span class="fu">log</span>(myXX)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>   }</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>   <span class="cf">if</span> (lambda0 <span class="sc">!=</span> <span class="dv">0</span>) {</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>      myV0 <span class="ot">&lt;-</span> (myXX <span class="sc">^</span> lambda0 <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> lambda0</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>   }</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>   mysub<span class="sc">$</span>variables<span class="sc">$</span>myv0 <span class="ot">&lt;-</span> myV0</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>   mylogit <span class="ot">&lt;-</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">svyglm</span>(</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>         depr_bi2 <span class="sc">~</span> myv0 <span class="sc">+</span> ridageyr <span class="sc">+</span> <span class="fu">factor</span>(riagendr) <span class="sc">+</span> <span class="fu">factor</span>(race_cat)  <span class="sc">+</span>  <span class="co">#Demorgraphic Variables</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>            <span class="fu">factor</span>(pir_cat5) <span class="sc">+</span> <span class="fu">factor</span>(edu_cat3) <span class="sc">+</span> <span class="fu">factor</span>(mar_cat) <span class="sc">+</span>                          <span class="co"># SES</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>            <span class="fu">factor</span>(smoker) <span class="sc">+</span> <span class="fu">factor</span>(regdrink) <span class="sc">+</span> <span class="fu">factor</span>(bmi_cat) <span class="sc">+</span>                             <span class="co"># health behavior and health indicator</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>            <span class="fu">factor</span>(fish30) <span class="sc">+</span> <span class="fu">factor</span>(shellfish30)  <span class="sc">+</span> <span class="fu">factor</span>(epa_cat3) <span class="sc">+</span> <span class="fu">factor</span>(dha_cat3) ,</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>         <span class="co"># dietary consumption</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>         <span class="at">design =</span> mysub</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>   myAIC[ii] <span class="ot">&lt;-</span> <span class="fu">AIC</span>(mylogit, <span class="at">k =</span> <span class="dv">2</span>)[<span class="dv">2</span>]</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>myID <span class="ot">&lt;-</span> <span class="fu">order</span>(myAIC)[<span class="dv">1</span>]</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>mylambda <span class="ot">&lt;-</span> myseq[myID]</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(myseq, myAIC)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>inits <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(<span class="fu">coef</span>(mylogit)) <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>inits[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">coef</span>(mylogit)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>inits[<span class="dv">3</span>] <span class="ot">&lt;-</span> mylambda</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>inits[<span class="dv">4</span><span class="sc">:</span>(<span class="fu">length</span>(<span class="fu">coef</span>(mylogit)) <span class="sc">+</span> <span class="dv">1</span>)] <span class="ot">&lt;-</span> <span class="fu">coef</span>(mylogit)[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)]</span></code></pre></div>
+<p>Fit a generalised linear model to data from a complex survey design, with inverse-probability weighting and design-based standard errors.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>   fit1 <span class="ot">&lt;-</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">svyglm</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>         depr_bi2 <span class="sc">~</span> lbxthg.log <span class="sc">+</span> ridageyr <span class="sc">+</span> <span class="fu">factor</span>(riagendr) <span class="sc">+</span> <span class="fu">factor</span>(race_cat)  <span class="sc">+</span>  <span class="co">#Demorgraphic Variables</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">factor</span>(pir_cat5) <span class="sc">+</span> <span class="fu">factor</span>(edu_cat3) <span class="sc">+</span> <span class="fu">factor</span>(mar_cat) <span class="sc">+</span>                          <span class="co"># SES</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>            <span class="fu">factor</span>(smoker) <span class="sc">+</span> <span class="fu">factor</span>(regdrink) <span class="sc">+</span> <span class="fu">factor</span>(bmi_cat) <span class="sc">+</span>                             <span class="co"># health behavior and health indicator</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            <span class="fu">factor</span>(fish30) <span class="sc">+</span> <span class="fu">factor</span>(shellfish30)  <span class="sc">+</span> <span class="fu">factor</span>(epa_cat3) <span class="sc">+</span> <span class="fu">factor</span>(dha_cat3) ,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>         <span class="co"># dietary consumption</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">design =</span> mysub</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="fu">glm</span>(</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>   depr_bi2 <span class="sc">~</span> lbxthg.log <span class="sc">+</span> ridageyr <span class="sc">+</span> <span class="fu">factor</span>(riagendr) <span class="sc">+</span> <span class="fu">factor</span>(race_cat)  <span class="sc">+</span>  <span class="co">#Demorgraphic Variables</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">factor</span>(pir_cat5) <span class="sc">+</span> <span class="fu">factor</span>(edu_cat3) <span class="sc">+</span> <span class="fu">factor</span>(mar_cat) <span class="sc">+</span>                          <span class="co"># SES</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">factor</span>(smoker) <span class="sc">+</span> <span class="fu">factor</span>(regdrink) <span class="sc">+</span> <span class="fu">factor</span>(bmi_cat) <span class="sc">+</span>                             <span class="co"># health behavior and health indicator</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">factor</span>(fish30) <span class="sc">+</span> <span class="fu">factor</span>(shellfish30)  <span class="sc">+</span> <span class="fu">factor</span>(epa_cat3) <span class="sc">+</span> <span class="fu">factor</span>(dha_cat3) ,</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>   <span class="at">weights =</span> wtdrd14yr,</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>   <span class="at">data =</span> mysub<span class="sc">$</span>variables</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a generalised linear model to data from a complex survey design, with inverse-probability weighting and design-based standard errors.</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>   fit2 <span class="ot">&lt;-</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>      <span class="fu">svyglm</span>(</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>         depr_bi2 <span class="sc">~</span> lbxthg.sqrt <span class="sc">+</span> ridageyr <span class="sc">+</span> <span class="fu">factor</span>(riagendr) <span class="sc">+</span> <span class="fu">factor</span>(race_cat)  <span class="sc">+</span>  <span class="co">#Demorgraphic Variables</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>            <span class="fu">factor</span>(pir_cat5) <span class="sc">+</span> <span class="fu">factor</span>(edu_cat3) <span class="sc">+</span> <span class="fu">factor</span>(mar_cat) <span class="sc">+</span>                          <span class="co"># SES</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>            <span class="fu">factor</span>(smoker) <span class="sc">+</span> <span class="fu">factor</span>(regdrink) <span class="sc">+</span> <span class="fu">factor</span>(bmi_cat) <span class="sc">+</span>                             <span class="co"># health behavior and health indicator</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>            <span class="fu">factor</span>(fish30) <span class="sc">+</span> <span class="fu">factor</span>(shellfish30)  <span class="sc">+</span> <span class="fu">factor</span>(epa_cat3) <span class="sc">+</span> <span class="fu">factor</span>(dha_cat3) ,</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>         <span class="co"># dietary consumption</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>         <span class="at">design =</span> mysub</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>   fit3 <span class="ot">&lt;-</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>      <span class="fu">svyglm</span>(</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>         depr_bi2 <span class="sc">~</span> lbxthg.id <span class="sc">+</span> ridageyr <span class="sc">+</span> <span class="fu">factor</span>(riagendr) <span class="sc">+</span> <span class="fu">factor</span>(race_cat)  <span class="sc">+</span>  <span class="co">#Demorgraphic Variables</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>            <span class="fu">factor</span>(pir_cat5) <span class="sc">+</span> <span class="fu">factor</span>(edu_cat3) <span class="sc">+</span> <span class="fu">factor</span>(mar_cat) <span class="sc">+</span>                          <span class="co"># SES</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>            <span class="fu">factor</span>(smoker) <span class="sc">+</span> <span class="fu">factor</span>(regdrink) <span class="sc">+</span> <span class="fu">factor</span>(bmi_cat) <span class="sc">+</span>                             <span class="co"># health behavior and health indicator</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>            <span class="fu">factor</span>(fish30) <span class="sc">+</span> <span class="fu">factor</span>(shellfish30)  <span class="sc">+</span> <span class="fu">factor</span>(epa_cat3) <span class="sc">+</span> <span class="fu">factor</span>(dha_cat3) ,</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>         <span class="co"># dietary consumption</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>         <span class="at">design =</span> mysub</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>   fit4 <span class="ot">&lt;-</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>      <span class="fu">svyglm</span>(</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>         depr_bi2 <span class="sc">~</span> lbxthg.sq <span class="sc">+</span> ridageyr <span class="sc">+</span> <span class="fu">factor</span>(riagendr) <span class="sc">+</span> <span class="fu">factor</span>(race_cat)  <span class="sc">+</span>  <span class="co">#Demorgraphic Variables</span></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>            <span class="fu">factor</span>(pir_cat5) <span class="sc">+</span> <span class="fu">factor</span>(edu_cat3) <span class="sc">+</span> <span class="fu">factor</span>(mar_cat) <span class="sc">+</span>                          <span class="co"># SES</span></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>            <span class="fu">factor</span>(smoker) <span class="sc">+</span> <span class="fu">factor</span>(regdrink) <span class="sc">+</span> <span class="fu">factor</span>(bmi_cat) <span class="sc">+</span>                             <span class="co"># health behavior and health indicator</span></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>            <span class="fu">factor</span>(fish30) <span class="sc">+</span> <span class="fu">factor</span>(shellfish30)  <span class="sc">+</span> <span class="fu">factor</span>(epa_cat3) <span class="sc">+</span> <span class="fu">factor</span>(dha_cat3) ,</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>         <span class="co"># dietary consumption</span></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>         <span class="at">design =</span> mysub</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(fit1, <span class="at">k =</span> <span class="dv">2</span>)</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(fit2, <span class="at">k =</span> <span class="dv">2</span>)</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(fit3, <span class="at">k =</span> <span class="dv">2</span>)</span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(fit4, <span class="at">k =</span> <span class="dv">2</span>)</span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit1)</span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit2)</span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit3)</span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit4)</span></code></pre></div>
+<p>handle the data</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>mylist <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;ridageyr&quot;</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;riagendr&quot;</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;race_cat&quot;</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;pir_cat5&quot;</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;edu_cat3&quot;</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;mar_cat&quot;</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;smoker&quot;</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;regdrink&quot;</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;bmi_cat&quot;</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;fish30&quot;</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;shellfish30&quot;</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;epa_cat3&quot;</span>,</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;dha_cat3&quot;</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(mysub<span class="sc">$</span>variables[, mylist[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)]], <span class="dv">2</span>, table)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>race_cat1 <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>race_cat</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>race_cat1[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>race_cat <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>race_cat2 <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>race_cat <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>race_cat2[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>race_cat <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>race_cat3 <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>race_cat <span class="sc">/</span> <span class="dv">3</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>race_cat3[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>race_cat <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>pir_cat5<span class="fl">.1</span> <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>pir_cat5</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>pir_cat5<span class="fl">.1</span>[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>pir_cat5 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>pir_cat5<span class="fl">.2</span> <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>pir_cat5 <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>pir_cat5<span class="fl">.2</span>[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>pir_cat5 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>pir_cat5<span class="fl">.3</span> <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>pir_cat5 <span class="sc">/</span> <span class="dv">3</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>pir_cat5<span class="fl">.3</span>[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>pir_cat5 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>pir_cat5<span class="fl">.4</span> <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>pir_cat5 <span class="sc">/</span> <span class="dv">4</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>pir_cat5<span class="fl">.4</span>[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>pir_cat5 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>edu_cat3<span class="fl">.1</span> <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>edu_cat3</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>edu_cat3<span class="fl">.1</span>[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>edu_cat3 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>edu_cat3<span class="fl">.2</span> <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>edu_cat3 <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>edu_cat3<span class="fl">.2</span>[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>edu_cat3 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>mar_cat<span class="fl">.1</span> <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>mar_cat</span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>mar_cat<span class="fl">.1</span>[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>mar_cat <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>mar_cat<span class="fl">.2</span> <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>mar_cat <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>mar_cat<span class="fl">.2</span>[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>mar_cat <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>mar_cat<span class="fl">.3</span> <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>mar_cat <span class="sc">/</span> <span class="dv">3</span></span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>mar_cat<span class="fl">.3</span>[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>mar_cat <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>bmi_cat<span class="fl">.1</span> <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>bmi_cat</span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>bmi_cat<span class="fl">.1</span>[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>bmi_cat <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>bmi_cat<span class="fl">.2</span> <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>bmi_cat <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>bmi_cat<span class="fl">.2</span>[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>bmi_cat <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>bmi_cat<span class="fl">.3</span> <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>bmi_cat <span class="sc">/</span> <span class="dv">3</span></span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>bmi_cat<span class="fl">.3</span>[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>bmi_cat <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>epa_cat3<span class="fl">.1</span> <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>epa_cat3</span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>epa_cat3<span class="fl">.1</span>[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>epa_cat3 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>epa_cat3<span class="fl">.2</span> <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>epa_cat3 <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>epa_cat3<span class="fl">.2</span>[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>epa_cat3 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>dha_cat3<span class="fl">.1</span> <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>dha_cat3</span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>dha_cat3<span class="fl">.1</span>[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>dha_cat3 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>dha_cat3<span class="fl">.2</span> <span class="ot">&lt;-</span> mysub<span class="sc">$</span>variables<span class="sc">$</span>dha_cat3 <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a>mysub<span class="sc">$</span>variables<span class="sc">$</span>dha_cat3<span class="fl">.2</span>[<span class="fu">which</span>(mysub<span class="sc">$</span>variables<span class="sc">$</span>dha_cat3 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>))] <span class="ot">&lt;-</span></span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span></span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a>mylist <span class="ot">&lt;-</span></span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a>   <span class="fu">c</span>(</span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;ridageyr&quot;</span>,</span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;riagendr&quot;</span>,</span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;race_cat1&quot;</span>,</span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;race_cat2&quot;</span>,</span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;race_cat3&quot;</span>,</span>
+<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;pir_cat5.1&quot;</span>,</span>
+<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;pir_cat5.2&quot;</span>,</span>
+<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;pir_cat5.3&quot;</span>,</span>
+<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;pir_cat5.4&quot;</span>,</span>
+<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;edu_cat3.1&quot;</span>,</span>
+<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;edu_cat3.2&quot;</span>,</span>
+<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;mar_cat.1&quot;</span>,</span>
+<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;mar_cat.2&quot;</span>,</span>
+<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;mar_cat.3&quot;</span>,</span>
+<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;smoker&quot;</span>,</span>
+<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;regdrink&quot;</span>,</span>
+<span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;bmi_cat.1&quot;</span>,</span>
+<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;bmi_cat.2&quot;</span>,</span>
+<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;bmi_cat.3&quot;</span>,</span>
+<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;fish30&quot;</span>,</span>
+<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;shellfish30&quot;</span>,</span>
+<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;epa_cat3.1&quot;</span>,</span>
+<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;epa_cat3.2&quot;</span>,</span>
+<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;dha_cat3.1&quot;</span>,</span>
+<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;dha_cat3.2&quot;</span></span>
+<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a>mysubsub <span class="ot">&lt;-</span></span>
+<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a>   <span class="fu">subset</span>(mysub, <span class="fu">rowSums</span>(<span class="fu">apply</span>(mysub<span class="sc">$</span>variables[, mylist], <span class="dv">2</span>, is.na)) <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a>iZZ <span class="ot">&lt;-</span> mysubsub<span class="sc">$</span>variables[, mylist]</span>
+<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a>ixx <span class="ot">&lt;-</span> mysubsub<span class="sc">$</span>variables<span class="sc">$</span>lbxthg</span>
+<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a>iyy <span class="ot">&lt;-</span> mysubsub<span class="sc">$</span>variables<span class="sc">$</span>depr_bi2</span>
+<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a>iw <span class="ot">&lt;-</span> mysubsub<span class="sc">$</span>variables<span class="sc">$</span>wtdrd14yr</span>
+<span id="cb7-134"><a href="#cb7-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a><span class="co"># ixx: continuous predictor</span></span>
+<span id="cb7-136"><a href="#cb7-136" aria-hidden="true" tabindex="-1"></a><span class="co"># iyy: binary outcome</span></span>
+<span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a><span class="co"># iZZ: covariates to be incorporated in the model</span></span>
+<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a><span class="co"># iw:  The weighted parameter</span></span>
+<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;R/FunsForOptimalV2.r&quot;</span>)</span>
+<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a>myLBC <span class="ot">&lt;-</span></span>
+<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a>   <span class="fu">maxLik</span>(</span>
+<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a>      <span class="at">logLik =</span> LogLikeFun,</span>
+<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a>      <span class="at">grad =</span> ScoreFun,</span>
+<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a>      <span class="at">start =</span> inits,</span>
+<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a>      <span class="at">ixx =</span> ixx,</span>
+<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a>      <span class="at">iyy =</span> iyy,</span>
+<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a>      <span class="at">iw =</span> iw,</span>
+<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a>      <span class="at">iZZ =</span> <span class="fu">as.matrix</span>(iZZ)</span>
+<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a><span class="co"># as.matrix returns all values of iZZ as a matrix</span></span>
+<span id="cb7-154"><a href="#cb7-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-155"><a href="#cb7-155" aria-hidden="true" tabindex="-1"></a>myLBC2 <span class="ot">&lt;-</span></span>
+<span id="cb7-156"><a href="#cb7-156" aria-hidden="true" tabindex="-1"></a>   <span class="fu">maxLik</span>(</span>
+<span id="cb7-157"><a href="#cb7-157" aria-hidden="true" tabindex="-1"></a>      <span class="at">logLik =</span> LogLikeFun2,</span>
+<span id="cb7-158"><a href="#cb7-158" aria-hidden="true" tabindex="-1"></a>      <span class="at">grad =</span> ScoreFun2,</span>
+<span id="cb7-159"><a href="#cb7-159" aria-hidden="true" tabindex="-1"></a>      <span class="at">start =</span> inits[<span class="sc">-</span><span class="dv">3</span>],</span>
+<span id="cb7-160"><a href="#cb7-160" aria-hidden="true" tabindex="-1"></a>      <span class="at">ixx =</span> ixx,</span>
+<span id="cb7-161"><a href="#cb7-161" aria-hidden="true" tabindex="-1"></a>      <span class="at">iyy =</span> iyy,</span>
+<span id="cb7-162"><a href="#cb7-162" aria-hidden="true" tabindex="-1"></a>      <span class="at">iw =</span> iw,</span>
+<span id="cb7-163"><a href="#cb7-163" aria-hidden="true" tabindex="-1"></a>      <span class="at">iZZ =</span> <span class="fu">as.matrix</span>(iZZ)</span>
+<span id="cb7-164"><a href="#cb7-164" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb7-165"><a href="#cb7-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-166"><a href="#cb7-166" aria-hidden="true" tabindex="-1"></a>ixx.log <span class="ot">&lt;-</span> <span class="fu">log</span>(mysubsub<span class="sc">$</span>variables<span class="sc">$</span>lbxthg)</span>
+<span id="cb7-167"><a href="#cb7-167" aria-hidden="true" tabindex="-1"></a>ixx.sqrt <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(mysubsub<span class="sc">$</span>variables<span class="sc">$</span>lbxthg)</span>
+<span id="cb7-168"><a href="#cb7-168" aria-hidden="true" tabindex="-1"></a>ixx.sq <span class="ot">&lt;-</span> (mysubsub<span class="sc">$</span>variables<span class="sc">$</span>lbxthg) <span class="sc">^</span> <span class="dv">2</span></span></code></pre></div>
+</div>
+</div>
+<div id="function-that-performs-maximum-likelihood-estimation" class="section level2">
+<h2>function that performs Maximum Likelihood estimation</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>myLBC.log <span class="ot">&lt;-</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">maxLik</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">logLik =</span> LogLikeFun2,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">grad =</span> ScoreFun2,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">start =</span> inits[<span class="sc">-</span><span class="dv">3</span>],</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">ixx =</span> ixx.log,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">iyy =</span> iyy,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">iw =</span> iw,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">iZZ =</span> <span class="fu">as.matrix</span>(iZZ)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>myLBC.sqrt <span class="ot">&lt;-</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>   <span class="fu">maxLik</span>(</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">logLik =</span> LogLikeFun2,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">grad =</span> ScoreFun2,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">start =</span> inits[<span class="sc">-</span><span class="dv">3</span>],</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">ixx =</span> ixx.sqrt,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">iyy =</span> iyy,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">iw =</span> iw,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">iZZ =</span> <span class="fu">as.matrix</span>(iZZ)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>myLBC.ind <span class="ot">&lt;-</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>   <span class="fu">maxLik</span>(</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">logLik =</span> LogLikeFun2,</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">grad =</span> ScoreFun2,</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">start =</span> inits[<span class="sc">-</span><span class="dv">3</span>],</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">ixx =</span> ixx,</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">iyy =</span> iyy,</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">iw =</span> iw,</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">iZZ =</span> <span class="fu">as.matrix</span>(iZZ)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>myLBC.sq <span class="ot">&lt;-</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>   <span class="fu">maxLik</span>(</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">logLik =</span> LogLikeFun2,</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">grad =</span> ScoreFun2,</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">start =</span> inits[<span class="sc">-</span><span class="dv">3</span>],</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">ixx =</span> ixx.sq,</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">iyy =</span> iyy,</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">iw =</span> iw,</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>      <span class="at">iZZ =</span> <span class="fu">as.matrix</span>(iZZ)</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the Slope</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>myLBC.log<span class="sc">$</span>estimate[<span class="dv">2</span>]</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>myLBC.sqrt<span class="sc">$</span>estimate[<span class="dv">2</span>]</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>myLBC.ind<span class="sc">$</span>estimate[<span class="dv">2</span>]</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>myLBC.sq<span class="sc">$</span>estimate[<span class="dv">2</span>]</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate AIC-2 * myLBC.log$maximum + 2 * 27-2 * myLBC.sqrt$maximum + 2 * 27-2 * myLBC.ind$maximum + 2 * 27-2 * myLBC.sq$maximum + 2 * 27</span></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the SE</span></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="sc">-</span><span class="fu">ginv</span>(myLBC.log<span class="sc">$</span>hessian)[<span class="dv">2</span>, <span class="dv">2</span>] <span class="sc">/</span> <span class="fu">length</span>(ixx))</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="sc">-</span><span class="fu">ginv</span>(myLBC.sqrt<span class="sc">$</span>hessian)[<span class="dv">2</span>, <span class="dv">2</span>] <span class="sc">/</span> <span class="fu">length</span>(ixx))</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="sc">-</span><span class="fu">ginv</span>(myLBC.ind<span class="sc">$</span>hessian)[<span class="dv">2</span>, <span class="dv">2</span>] <span class="sc">/</span> <span class="fu">length</span>(ixx))</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="sc">-</span><span class="fu">ginv</span>(myLBC.sq<span class="sc">$</span>hessian)[<span class="dv">2</span>, <span class="dv">2</span>] <span class="sc">/</span> <span class="fu">length</span>(ixx))</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the ARD</span></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a><span class="co"># absolute relative difference (ARD) to measure the difference between the large sample limit</span></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>(myLBC.log<span class="sc">$</span>estimate[<span class="dv">2</span>] <span class="sc">+</span> <span class="fl">0.1546</span>) <span class="sc">/</span> <span class="fl">0.1546</span></span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>(myLBC.sqrt<span class="sc">$</span>estimate[<span class="dv">2</span>] <span class="sc">+</span> <span class="fl">0.1549</span>) <span class="sc">/</span> <span class="fl">0.1549</span></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>(myLBC.ind<span class="sc">$</span>estimate[<span class="dv">2</span>] <span class="sc">+</span> <span class="fl">0.1551</span>) <span class="sc">/</span> <span class="fl">0.1551</span></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>(myLBC.sq<span class="sc">$</span>estimate[<span class="dv">2</span>] <span class="sc">+</span> <span class="fl">0.1556</span>) <span class="sc">/</span> <span class="fl">0.1556</span></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a><span class="co">#myLBC2$estimate</span></span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a><span class="co">#myLBC$estimate</span></span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a><span class="co">#23.33556/sqrt(dim(mysubsub)[1])</span></span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a><span class="co">#5.68067/sqrt(dim(mysubsub)[1])</span></span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a><span class="co">#31.58821/sqrt(dim(mysubsub)[1])</span></span></code></pre></div>
+<p>Note that the alternative linear models are the weighted logistic linear models on <span class="math inline">\(X^{(q)}\)</span> scale with the choices of <span class="math inline">\(q\)</span> = 0, 0.5 and 1. The various results are summarized. In comparing the four linear models, we found the square-root model (<span class="math inline">\(q\)</span> = 0.5) has the smallest AIC, which suggests it is the preferred model among these four possibilities. On the other hand, if we look at ARD, the smallest ARD occurs between the log model (<span class="math inline">\(q\)</span> = 0) and the LBC model, which is consistent with our previous finding. That is, the slope estimated from the simple linear model with log-transformed predictor is relatively close to the median effect. It is noteworthy that all four model choices support the apparent inverse association between the blood mercury level and the prevalence of depression in this sample.</p>
+</div>
+<div id="calculate-the-parameter-of-the-model" class="section level2">
+<h2>calculate the parameter of the model</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>beta0 <span class="ot">&lt;-</span> myLBC<span class="sc">$</span>estimate[<span class="dv">1</span>]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>beta1 <span class="ot">&lt;-</span> myLBC<span class="sc">$</span>estimate[<span class="dv">2</span>]</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> myLBC<span class="sc">$</span>estimate[<span class="dv">3</span>]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>myV <span class="ot">&lt;-</span> (<span class="sc">-</span><span class="dv">1</span> <span class="sc">/</span> lambda)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>aa <span class="ot">&lt;-</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">exp</span>(beta0 <span class="sc">+</span> beta1 <span class="sc">*</span> myV <span class="sc">+</span> myLBC<span class="sc">$</span>estimate[<span class="dv">4</span><span class="sc">:</span><span class="dv">28</span>] <span class="sc">%*%</span> <span class="fu">apply</span>(iZZ, <span class="dv">2</span>, mean))</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>aa <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> aa)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>bb <span class="ot">&lt;-</span> <span class="fu">exp</span>(beta0 <span class="sc">+</span> myLBC<span class="sc">$</span>estimate[<span class="dv">4</span><span class="sc">:</span><span class="dv">28</span>] <span class="sc">%*%</span> <span class="fu">apply</span>(iZZ, <span class="dv">2</span>, mean))</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>beta1 <span class="sc">*</span> bb <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> bb) <span class="sc">^</span> <span class="dv">2</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>mydelta <span class="ot">&lt;-</span> beta1 <span class="sc">*</span> <span class="fu">exp</span>((lambda <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> myu)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>mymat <span class="ot">&lt;-</span> (<span class="sc">-</span><span class="fu">ginv</span>(myLBC<span class="sc">$</span>hessian)[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>] <span class="sc">/</span> <span class="fu">dim</span>(mysubsub)[<span class="dv">1</span>])</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>varbeta1 <span class="ot">&lt;-</span> mymat[<span class="dv">2</span>, <span class="dv">2</span>]</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>covbeta1lambda <span class="ot">&lt;-</span> mymat[<span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>varlambda <span class="ot">&lt;-</span> mymat[<span class="dv">3</span>, <span class="dv">3</span>]</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(mydelta <span class="sc">^</span> <span class="dv">2</span> <span class="sc">*</span> (</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>   varbeta1 <span class="sc">/</span> beta1 <span class="sc">^</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> myu <span class="sc">*</span> covbeta1lambda <span class="sc">/</span> beta1 <span class="sc">+</span> myu <span class="sc">^</span> <span class="dv">2</span> <span class="sc">*</span> varlambda</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>mydelta <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fl">0.06851505</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>myLBC<span class="sc">$</span>estimate[<span class="dv">2</span>] <span class="sc">*</span> <span class="fu">exp</span>((<span class="fl">0.61789</span> <span class="sc">-</span> <span class="dv">0</span>) <span class="sc">*</span> myu)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>myLBC<span class="sc">$</span>estimate[<span class="dv">2</span>] <span class="sc">*</span> <span class="fu">exp</span>((<span class="fl">0.61789</span> <span class="sc">-</span> <span class="dv">2</span>) <span class="sc">*</span> myu)</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the median effects</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>beta1 <span class="sc">*</span> <span class="fu">exp</span>((lambda <span class="sc">-</span> <span class="dv">0</span>) <span class="sc">*</span> myu)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>beta1 <span class="sc">*</span> <span class="fu">exp</span>((lambda <span class="sc">-</span> <span class="fl">0.5</span>) <span class="sc">*</span> myu)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>beta1 <span class="sc">*</span> <span class="fu">exp</span>((lambda <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> myu)</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>beta1 <span class="sc">*</span> <span class="fu">exp</span>((lambda <span class="sc">-</span> <span class="dv">2</span>) <span class="sc">*</span> myu)</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>(<span class="sc">-</span><span class="fl">0.0096180</span> <span class="sc">-</span> beta1 <span class="sc">*</span> <span class="fu">exp</span>((lambda <span class="sc">-</span> <span class="dv">0</span>) <span class="sc">*</span> myu)) <span class="sc">/</span> (beta1 <span class="sc">*</span> <span class="fu">exp</span>((lambda <span class="sc">-</span> <span class="dv">0</span>) <span class="sc">*</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>                                                                 myu))</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>(<span class="sc">-</span><span class="fl">0.0072421</span> <span class="sc">-</span> beta1 <span class="sc">*</span> <span class="fu">exp</span>((lambda <span class="sc">-</span> <span class="fl">0.5</span>) <span class="sc">*</span> myu)) <span class="sc">/</span> (beta1 <span class="sc">*</span> <span class="fu">exp</span>((lambda <span class="sc">-</span> <span class="fl">0.5</span>) <span class="sc">*</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>                                                                   myu))</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>(<span class="sc">-</span><span class="fl">0.0031768</span> <span class="sc">-</span> beta1 <span class="sc">*</span> <span class="fu">exp</span>((lambda <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> myu)) <span class="sc">/</span> (beta1 <span class="sc">*</span> <span class="fu">exp</span>((lambda <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>                                                                 myu))</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>(<span class="sc">-</span><span class="fl">0.0001916</span> <span class="sc">-</span> beta1 <span class="sc">*</span> <span class="fu">exp</span>((lambda <span class="sc">-</span> <span class="dv">2</span>) <span class="sc">*</span> myu)) <span class="sc">/</span> (beta1 <span class="sc">*</span> <span class="fu">exp</span>((lambda <span class="sc">-</span> <span class="dv">2</span>) <span class="sc">*</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>                                                                 myu))</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the CI of the prevalence</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>Z0 <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">apply</span>(iZZ, <span class="dv">2</span>, mean)))</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>Var.Beta <span class="ot">&lt;-</span> <span class="fu">ginv</span>(<span class="sc">-</span>myLBC<span class="sc">$</span>hessian) <span class="sc">/</span> <span class="fu">dim</span>(mysubsub)[<span class="dv">1</span>]</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>delta.h.beta <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">c</span>(<span class="dv">1</span> <span class="sc">/</span> lambda, <span class="sc">-</span>beta1 <span class="sc">/</span> lambda <span class="sc">^</span> <span class="dv">2</span>))</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Multivariate Delta Method to calculate the variance of beta1/lambda</span></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>part1 <span class="ot">&lt;-</span> <span class="fu">t</span>(delta.h.beta) <span class="sc">%*%</span> Var.Beta[<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>] <span class="sc">%*%</span> (delta.h.beta)</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>part2 <span class="ot">&lt;-</span> Z0 <span class="sc">%*%</span> Var.Beta[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>), <span class="sc">-</span><span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>)] <span class="sc">%*%</span> Z0</span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a><span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(part1 <span class="sc">+</span> part2)</span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>aa1 <span class="ot">&lt;-</span></span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>   <span class="fu">exp</span>(beta0 <span class="sc">+</span> beta1 <span class="sc">*</span> myV <span class="sc">+</span> myLBC<span class="sc">$</span>estimate[<span class="dv">4</span><span class="sc">:</span><span class="dv">28</span>] <span class="sc">%*%</span> <span class="fu">apply</span>(iZZ, <span class="dv">2</span>, mean) <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>          <span class="fu">sqrt</span>(part1 <span class="sc">+</span> part2))</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>aa1 <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> aa1)</span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>aa2 <span class="ot">&lt;-</span></span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>   <span class="fu">exp</span>(beta0 <span class="sc">+</span> beta1 <span class="sc">*</span> myV <span class="sc">+</span> myLBC<span class="sc">$</span>estimate[<span class="dv">4</span><span class="sc">:</span><span class="dv">28</span>] <span class="sc">%*%</span> <span class="fu">apply</span>(iZZ, <span class="dv">2</span>, mean) <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span></span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>          <span class="fu">sqrt</span>(part1 <span class="sc">+</span> part2))</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>aa2 <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> aa2)</span></code></pre></div>
+</div>
+<div id="the-result-is-shown-belowed" class="section level2">
+<h2>The result is shown belowed</h2>
+<p>The model parameter estimates <span class="math display">\[
+\hat{\beta}_{0}=-1.555(\mathrm{SE} 0.280), \hat{\beta}_{1}=-0.155(\mathrm{SE} 0.068) \text { and } \hat{\lambda}=0.618(\mathrm{SE} 0.380)
+\]</span> The estimated prevalence <span class="math display">\[
+\begin{aligned}
+\hat{\operatorname{Pr}}\left(Y=1|X=0| Z=Z_{0}\right) &amp;=\left.\operatorname{expit}\left(\hat{\beta}_{0}+\hat{\beta}_{1} X^{(\hat{\lambda})}+\hat{\eta}^{T} Z_{0}\right)\right|_{X=0, Z=Z_{0}} \\
+&amp;=7.4 \%
+\end{aligned}
+\]</span> where <span class="math inline">\(Z_{0}\)</span> consists of the means of continuous covariates and population proportions of categorical covariates representing the average population level. The corresponding <span class="math inline">\(95 \%\)</span> CI is <span class="math inline">\((0.047,0.114)\)</span>. This prevalence is close to the reported overall depression rate, <span class="math inline">\(0.081\)</span>, for American adults aged 20 and over having depression in a given 2 -week period during 2013-2016 (Brody, Pratt &amp; Hughes, 2018).</p>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

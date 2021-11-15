@@ -1,0 +1,534 @@
+---
+title: "my-vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Vignettes for LBC
+
+**Haoxue Wang, Li Xing, Xuekui Zhang, Igor Burstyn, Paul Gustafson**
+
+### Introduction
+
+This package includes key functions in LBC(logistic Box–Cox regression) model and a NHANES Dataset to test the model.
+
+There are three major benefits of using the LBC model. First of all, compared with the logistic regression model, the LBC model has flexibility in estimating the non-linear relationship between the log-odds and exposure via a shape parameter. It can accommodate a wide range of non-linear shapes. Thus, it is superior to the common two-step approach, which adds a data
+transformation step before fitting a logistic regression model to accommodate any non-linearity in the disease-exposure relationship. Second, the LBC model helps us design future studies. For instance, we can estimate the sample size based on a desired accuracy of the shape parameter estimator, using prior knowledge regarding the strength of association, disease prevalence, exposure skewness, and apparent pattern of non-linearity. Third, as a by-product of the LBC model, the median effect represents the gradient measurement over the entire distribution of the predictor with respect to a generalized scale, which facilitates the interpretation of this non-linear model.
+
+### The main function
+**myfit.prof()** for estimates the LBC model parameter. 
+
+**LogLikeFun()** for caculating the log-likelihood value for Maximum Likelihood Estimates in LBC model. 
+
+**ScoreFun()** for caculating the gradient value for Maximum Likelihood Estimates in LBC model. 
+
+**HessFun()** for calculating the Hessian matrix.
+
+
+```{r setup}
+library(LBC)
+```
+#### Here we give an example to show that LBC model outperforms logistic linear models based on the NHANES dataset.
+
+firstly we library all the packages we need 
+```{}
+library(survey)
+library(maxLik)
+#library(ggplot2)
+library(MASS)
+```
+We analyze data from the National Health and Nutrition Examination Survey (NHANES) 2009–2010, which involved 8,893 adults aged 20 and over with complete records in depression and blood mercury measurements. The exposure variable, X, is the total blood mercury in micrograms per litre (𝜇g/L), and the binary outcome for depression, Y, is dichotomized from the score of the Patient Health Questionnaire-9 (PHQ-9) with 0 indicating no depression (a PHQ-9 score ≤ 9) and 1 indicating depression (a PHQ-9 score ≥ 10). We controlled for potential confounding associated with demographic and socioeconomic characteristics and dietary intake, Z, where Z contains the following covariates: age, gender, ethnicity, quintiles of family income-to-poverty ratio, education levels, marital status, smoking status, self-reported drinking status, body mass index, self-reported fish or shellfish intake in the past 30 days.
+```R
+mydata <-
+   subset(read.csv("Data/n05_08.csv", as.is = T), !is.na(wtdrd14yr))
+# returns a value of true and false for each value in a data set.
+
+colnames(mydata) <-
+   tolower(colnames(mydata)) # convert the uppercase letters of string to lowercase string
+head(mydata)  # display the first n rows present in the input data
+dim(mydata)   # returns the dimension (e.g. the number of columns and rows) of a matrix
+
+# transformed exposure variable
+mydata$lbxthg.id <- (mydata$lbxthg - 1)
+mydata$lbxthg.sqrt <- (sqrt(mydata$lbxthg) - 1) / 0.5
+mydata$lbxthg.log <- log(mydata$lbxthg)
+mydata$lbxthg.sq <- ((mydata$lbxthg) ^ 2 - 1) / 2
+```
+Because NHANES is conducted using a complex sampling design, the statistical methods based on simple random sampling can introduce bias for population level parameter estimates. Instead we employed sampling-weighted statistics and incorporated sampling weights in the regular models to achieve estimates that should better represent the population (Lumley, 2011)
+```R
+# fit the sample design
+mysubdata <-
+   subset(mydata, (ridageyr >= 20) &
+             (!is.na(mydata$depr_bi2)) & (!is.na(mydata$lbxthg)))
+mysub <- svydesign(id =  ~ 1,
+                   weights =  ~ wtdrd14yr,
+                   data = mysubdata)
+
+# id:Formula or data frame specifying cluster ids from largest level to smallest level
+# ~0 or ~1 is a formula for no clusters.
+# weights: specify sampling weights as an alternative to prob
+
+# Alternative definition
+
+##mydesign <- svydesign(id=~1, weights=~wtdrd14yr,  data = mydata)
+##mysub2 <- subset(mydesign, (ridageyr>=20)&(!is.na(mydata$depr_bi2))&(!is.na(mydata$lbxthg)))
+```
+Calculate the weighted mean and the weighted variance
+```R
+
+myu <- svymean(~ log(lbxthg), mysub)[1]
+mysigma <-
+   sqrt(svyvar(~ log(lbxthg), mysub))[1] # the design is mysub
+
+myXX = mysub$variables$lbxthg #
+UpperBound = 2
+NoOFIni <- 1000
+myseq <- seq(0, UpperBound, length = NoOFIni)
+myAIC <- rep(NA, NoOFIni)
+
+for (ii in 1:NoOFIni)
+{
+   lambda0 = myseq[ii]
+
+   if (lambda0 == 0) {
+      myV0 <- log(myXX)
+   }
+   if (lambda0 != 0) {
+      myV0 <- (myXX ^ lambda0 - 1) / lambda0
+   }
+   mysub$variables$myv0 <- myV0
+   mylogit <-
+      svyglm(
+         depr_bi2 ~ myv0 + ridageyr + factor(riagendr) + factor(race_cat)  +  #Demorgraphic Variables
+            factor(pir_cat5) + factor(edu_cat3) + factor(mar_cat) +                          # SES
+            factor(smoker) + factor(regdrink) + factor(bmi_cat) +                             # health behavior and health indicator
+            factor(fish30) + factor(shellfish30)  + factor(epa_cat3) + factor(dha_cat3) ,
+         # dietary consumption
+         design = mysub
+      )
+
+   myAIC[ii] <- AIC(mylogit, k = 2)[2]
+}
+
+myID <- order(myAIC)[1]
+mylambda <- myseq[myID]
+
+plot(myseq, myAIC)
+
+
+inits <- rep(NA, length(coef(mylogit)) + 1)
+inits[1:2] <- coef(mylogit)[1:2]
+inits[3] <- mylambda
+inits[4:(length(coef(mylogit)) + 1)] <- coef(mylogit)[-c(1:2)]
+
+```
+Fit a generalised linear model to data from a complex survey design, with inverse-probability weighting and design-based standard errors.
+```R
+summary(
+   fit1 <-
+      svyglm(
+         depr_bi2 ~ lbxthg.log + ridageyr + factor(riagendr) + factor(race_cat)  +  #Demorgraphic Variables
+            factor(pir_cat5) + factor(edu_cat3) + factor(mar_cat) +                          # SES
+            factor(smoker) + factor(regdrink) + factor(bmi_cat) +                             # health behavior and health indicator
+            factor(fish30) + factor(shellfish30)  + factor(epa_cat3) + factor(dha_cat3) ,
+         # dietary consumption
+         design = mysub
+      )
+)
+
+
+
+glm(
+   depr_bi2 ~ lbxthg.log + ridageyr + factor(riagendr) + factor(race_cat)  +  #Demorgraphic Variables
+      factor(pir_cat5) + factor(edu_cat3) + factor(mar_cat) +                          # SES
+      factor(smoker) + factor(regdrink) + factor(bmi_cat) +                             # health behavior and health indicator
+      factor(fish30) + factor(shellfish30)  + factor(epa_cat3) + factor(dha_cat3) ,
+   weights = wtdrd14yr,
+   data = mysub$variables
+)
+
+# Fit a generalised linear model to data from a complex survey design, with inverse-probability weighting and design-based standard errors.
+
+summary(
+   fit2 <-
+      svyglm(
+         depr_bi2 ~ lbxthg.sqrt + ridageyr + factor(riagendr) + factor(race_cat)  +  #Demorgraphic Variables
+            factor(pir_cat5) + factor(edu_cat3) + factor(mar_cat) +                          # SES
+            factor(smoker) + factor(regdrink) + factor(bmi_cat) +                             # health behavior and health indicator
+            factor(fish30) + factor(shellfish30)  + factor(epa_cat3) + factor(dha_cat3) ,
+         # dietary consumption
+         design = mysub
+      )
+)
+
+summary(
+   fit3 <-
+      svyglm(
+         depr_bi2 ~ lbxthg.id + ridageyr + factor(riagendr) + factor(race_cat)  +  #Demorgraphic Variables
+            factor(pir_cat5) + factor(edu_cat3) + factor(mar_cat) +                          # SES
+            factor(smoker) + factor(regdrink) + factor(bmi_cat) +                             # health behavior and health indicator
+            factor(fish30) + factor(shellfish30)  + factor(epa_cat3) + factor(dha_cat3) ,
+         # dietary consumption
+         design = mysub
+      )
+)
+
+summary(
+   fit4 <-
+      svyglm(
+         depr_bi2 ~ lbxthg.sq + ridageyr + factor(riagendr) + factor(race_cat)  +  #Demorgraphic Variables
+            factor(pir_cat5) + factor(edu_cat3) + factor(mar_cat) +                          # SES
+            factor(smoker) + factor(regdrink) + factor(bmi_cat) +                             # health behavior and health indicator
+            factor(fish30) + factor(shellfish30)  + factor(epa_cat3) + factor(dha_cat3) ,
+         # dietary consumption
+         design = mysub
+      )
+)
+
+AIC(fit1, k = 2)
+AIC(fit2, k = 2)
+AIC(fit3, k = 2)
+AIC(fit4, k = 2)
+
+
+summary(fit1)
+summary(fit2)
+summary(fit3)
+summary(fit4)
+```
+handle the data
+```R
+
+mylist <- c(
+   "ridageyr",
+   "riagendr",
+   "race_cat",
+   "pir_cat5",
+   "edu_cat3",
+   "mar_cat",
+   "smoker",
+   "regdrink",
+   "bmi_cat",
+   "fish30",
+   "shellfish30",
+   "epa_cat3",
+   "dha_cat3"
+)
+
+apply(mysub$variables[, mylist[-c(1, 2)]], 2, table)
+
+mysub$variables$race_cat1 <- mysub$variables$race_cat
+mysub$variables$race_cat1[which(mysub$variables$race_cat %in% c(2, 3))] <-
+   0
+
+mysub$variables$race_cat2 <- mysub$variables$race_cat / 2
+mysub$variables$race_cat2[which(mysub$variables$race_cat %in% c(1, 3))] <-
+   0
+
+mysub$variables$race_cat3 <- mysub$variables$race_cat / 3
+mysub$variables$race_cat3[which(mysub$variables$race_cat %in% c(1, 2))] <-
+   0
+
+mysub$variables$pir_cat5.1 <- mysub$variables$pir_cat5
+mysub$variables$pir_cat5.1[which(mysub$variables$pir_cat5 %in% c(2:4))] <-
+   0
+
+mysub$variables$pir_cat5.2 <- mysub$variables$pir_cat5 / 2
+mysub$variables$pir_cat5.2[which(mysub$variables$pir_cat5 %in% c(1, 3, 4))] <-
+   0
+
+mysub$variables$pir_cat5.3 <- mysub$variables$pir_cat5 / 3
+mysub$variables$pir_cat5.3[which(mysub$variables$pir_cat5 %in% c(1, 2, 4))] <-
+   0
+
+mysub$variables$pir_cat5.4 <- mysub$variables$pir_cat5 / 4
+mysub$variables$pir_cat5.4[which(mysub$variables$pir_cat5 %in% c(1:3))] <-
+   0
+
+
+mysub$variables$edu_cat3.1 <- mysub$variables$edu_cat3
+mysub$variables$edu_cat3.1[which(mysub$variables$edu_cat3 %in% c(2))] <-
+   0
+
+mysub$variables$edu_cat3.2 <- mysub$variables$edu_cat3 / 2
+mysub$variables$edu_cat3.2[which(mysub$variables$edu_cat3 %in% c(1))] <-
+   0
+
+mysub$variables$mar_cat.1 <- mysub$variables$mar_cat
+mysub$variables$mar_cat.1[which(mysub$variables$mar_cat %in% c(2, 3))] <-
+   0
+
+mysub$variables$mar_cat.2 <- mysub$variables$mar_cat / 2
+mysub$variables$mar_cat.2[which(mysub$variables$mar_cat %in% c(1, 3))] <-
+   0
+
+mysub$variables$mar_cat.3 <- mysub$variables$mar_cat / 3
+mysub$variables$mar_cat.3[which(mysub$variables$mar_cat %in% c(1, 2))] <-
+   0
+
+mysub$variables$bmi_cat.1 <- mysub$variables$bmi_cat
+mysub$variables$bmi_cat.1[which(mysub$variables$bmi_cat %in% c(2, 3))] <-
+   0
+
+mysub$variables$bmi_cat.2 <- mysub$variables$bmi_cat / 2
+mysub$variables$bmi_cat.2[which(mysub$variables$bmi_cat %in% c(1, 3))] <-
+   0
+
+mysub$variables$bmi_cat.3 <- mysub$variables$bmi_cat / 3
+mysub$variables$bmi_cat.3[which(mysub$variables$bmi_cat %in% c(1, 2))] <-
+   0
+
+mysub$variables$epa_cat3.1 <- mysub$variables$epa_cat3
+mysub$variables$epa_cat3.1[which(mysub$variables$epa_cat3 %in% c(2))] <-
+   0
+
+mysub$variables$epa_cat3.2 <- mysub$variables$epa_cat3 / 2
+mysub$variables$epa_cat3.2[which(mysub$variables$epa_cat3 %in% c(1))] <-
+   0
+
+
+mysub$variables$dha_cat3.1 <- mysub$variables$dha_cat3
+mysub$variables$dha_cat3.1[which(mysub$variables$dha_cat3 %in% c(2))] <-
+   0
+
+mysub$variables$dha_cat3.2 <- mysub$variables$dha_cat3 / 2
+mysub$variables$dha_cat3.2[which(mysub$variables$dha_cat3 %in% c(1))] <-
+   0
+
+mylist <-
+   c(
+      "ridageyr",
+      "riagendr",
+      "race_cat1",
+      "race_cat2",
+      "race_cat3",
+      "pir_cat5.1",
+      "pir_cat5.2",
+      "pir_cat5.3",
+      "pir_cat5.4",
+      "edu_cat3.1",
+      "edu_cat3.2",
+      "mar_cat.1",
+      "mar_cat.2",
+      "mar_cat.3",
+      "smoker",
+      "regdrink",
+      "bmi_cat.1",
+      "bmi_cat.2",
+      "bmi_cat.3",
+      "fish30",
+      "shellfish30",
+      "epa_cat3.1",
+      "epa_cat3.2",
+      "dha_cat3.1",
+      "dha_cat3.2"
+   )
+
+mysubsub <-
+   subset(mysub, rowSums(apply(mysub$variables[, mylist], 2, is.na)) == 0)
+iZZ <- mysubsub$variables[, mylist]
+
+ixx <- mysubsub$variables$lbxthg
+iyy <- mysubsub$variables$depr_bi2
+iw <- mysubsub$variables$wtdrd14yr
+
+# ixx: continuous predictor
+# iyy: binary outcome
+# iZZ: covariates to be incorporated in the model
+# iw:  The weighted parameter
+
+source("R/FunsForOptimalV2.r")
+
+myLBC <-
+   maxLik(
+      logLik = LogLikeFun,
+      grad = ScoreFun,
+      start = inits,
+      ixx = ixx,
+      iyy = iyy,
+      iw = iw,
+      iZZ = as.matrix(iZZ)
+   )
+
+# as.matrix returns all values of iZZ as a matrix
+
+myLBC2 <-
+   maxLik(
+      logLik = LogLikeFun2,
+      grad = ScoreFun2,
+      start = inits[-3],
+      ixx = ixx,
+      iyy = iyy,
+      iw = iw,
+      iZZ = as.matrix(iZZ)
+   )
+
+ixx.log <- log(mysubsub$variables$lbxthg)
+ixx.sqrt <- sqrt(mysubsub$variables$lbxthg)
+ixx.sq <- (mysubsub$variables$lbxthg) ^ 2
+```
+
+## function that performs Maximum Likelihood estimation
+```R
+myLBC.log <-
+   maxLik(
+      logLik = LogLikeFun2,
+      grad = ScoreFun2,
+      start = inits[-3],
+      ixx = ixx.log,
+      iyy = iyy,
+      iw = iw,
+      iZZ = as.matrix(iZZ)
+   )
+myLBC.sqrt <-
+   maxLik(
+      logLik = LogLikeFun2,
+      grad = ScoreFun2,
+      start = inits[-3],
+      ixx = ixx.sqrt,
+      iyy = iyy,
+      iw = iw,
+      iZZ = as.matrix(iZZ)
+   )
+myLBC.ind <-
+   maxLik(
+      logLik = LogLikeFun2,
+      grad = ScoreFun2,
+      start = inits[-3],
+      ixx = ixx,
+      iyy = iyy,
+      iw = iw,
+      iZZ = as.matrix(iZZ)
+   )
+myLBC.sq <-
+   maxLik(
+      logLik = LogLikeFun2,
+      grad = ScoreFun2,
+      start = inits[-3],
+      ixx = ixx.sq,
+      iyy = iyy,
+      iw = iw,
+      iZZ = as.matrix(iZZ)
+   )
+
+# calculate the Slope
+myLBC.log$estimate[2]
+myLBC.sqrt$estimate[2]
+myLBC.ind$estimate[2]
+myLBC.sq$estimate[2]
+
+# Calculate AIC-2 * myLBC.log$maximum + 2 * 27-2 * myLBC.sqrt$maximum + 2 * 27-2 * myLBC.ind$maximum + 2 * 27-2 * myLBC.sq$maximum + 2 * 27
+
+# calculate the SE
+sqrt(-ginv(myLBC.log$hessian)[2, 2] / length(ixx))
+sqrt(-ginv(myLBC.sqrt$hessian)[2, 2] / length(ixx))
+sqrt(-ginv(myLBC.ind$hessian)[2, 2] / length(ixx))
+sqrt(-ginv(myLBC.sq$hessian)[2, 2] / length(ixx))
+
+# calculate the ARD
+# absolute relative difference (ARD) to measure the difference between the large sample limit
+(myLBC.log$estimate[2] + 0.1546) / 0.1546
+(myLBC.sqrt$estimate[2] + 0.1549) / 0.1549
+(myLBC.ind$estimate[2] + 0.1551) / 0.1551
+(myLBC.sq$estimate[2] + 0.1556) / 0.1556
+
+
+#myLBC2$estimate
+#myLBC$estimate
+#23.33556/sqrt(dim(mysubsub)[1])
+#5.68067/sqrt(dim(mysubsub)[1])
+#31.58821/sqrt(dim(mysubsub)[1])
+```
+Note that the alternative linear models are the weighted logistic linear models on $X^{(q)}$ scale with the choices of $q$ = 0, 0.5 and 1. The various results are summarized. In comparing the four linear models, we found the square-root model ($q$ = 0.5) has the smallest AIC, which suggests it is the preferred model among these four possibilities. On the other hand, if we look at ARD, the smallest ARD occurs between the log model ($q$ = 0) and the LBC model, which is consistent with our previous finding. That is, the slope estimated from the simple linear model with log-transformed
+predictor is relatively close to the median effect. It is noteworthy that all four model choices
+support the apparent inverse association between the blood mercury level and the prevalence
+of depression in this sample.
+
+## calculate the parameter of the model
+```R
+beta0 <- myLBC$estimate[1]
+beta1 <- myLBC$estimate[2]
+lambda <- myLBC$estimate[3]
+myV <- (-1 / lambda)
+aa <-
+   exp(beta0 + beta1 * myV + myLBC$estimate[4:28] %*% apply(iZZ, 2, mean))
+aa / (1 + aa)
+
+bb <- exp(beta0 + myLBC$estimate[4:28] %*% apply(iZZ, 2, mean))
+beta1 * bb / (1 + bb) ^ 2
+
+mydelta <- beta1 * exp((lambda - 1) * myu)
+mymat <- (-ginv(myLBC$hessian)[1:3, 1:3] / dim(mysubsub)[1])
+varbeta1 <- mymat[2, 2]
+covbeta1lambda <- mymat[2, 3]
+varlambda <- mymat[3, 3]
+
+sqrt(mydelta ^ 2 * (
+   varbeta1 / beta1 ^ 2 + 2 * myu * covbeta1lambda / beta1 + myu ^ 2 * varlambda
+))
+mydelta + 2 * 0.06851505
+
+myLBC$estimate[2] * exp((0.61789 - 0) * myu)
+myLBC$estimate[2] * exp((0.61789 - 2) * myu)
+
+# calculate the median effects
+beta1 * exp((lambda - 0) * myu)
+beta1 * exp((lambda - 0.5) * myu)
+beta1 * exp((lambda - 1) * myu)
+beta1 * exp((lambda - 2) * myu)
+
+(-0.0096180 - beta1 * exp((lambda - 0) * myu)) / (beta1 * exp((lambda - 0) *
+                                                                 myu))
+(-0.0072421 - beta1 * exp((lambda - 0.5) * myu)) / (beta1 * exp((lambda - 0.5) *
+                                                                   myu))
+(-0.0031768 - beta1 * exp((lambda - 1) * myu)) / (beta1 * exp((lambda - 1) *
+                                                                 myu))
+(-0.0001916 - beta1 * exp((lambda - 2) * myu)) / (beta1 * exp((lambda - 2) *
+                                                                 myu))
+
+
+#
+# Calculate the CI of the prevalence
+#
+
+Z0 <- as.vector(c(1, apply(iZZ, 2, mean)))
+Var.Beta <- ginv(-myLBC$hessian) / dim(mysubsub)[1]
+
+delta.h.beta <- as.vector(c(1 / lambda, -beta1 / lambda ^ 2))
+
+# Multivariate Delta Method to calculate the variance of beta1/lambda
+part1 <- t(delta.h.beta) %*% Var.Beta[2:3, 2:3] %*% (delta.h.beta)
+part2 <- Z0 %*% Var.Beta[-c(2:3), -c(2:3)] %*% Z0
+1.96 * sqrt(part1 + part2)
+aa1 <-
+   exp(beta0 + beta1 * myV + myLBC$estimate[4:28] %*% apply(iZZ, 2, mean) - 1.96 *
+          sqrt(part1 + part2))
+aa1 / (1 + aa1)
+aa2 <-
+   exp(beta0 + beta1 * myV + myLBC$estimate[4:28] %*% apply(iZZ, 2, mean) + 1.96 *
+          sqrt(part1 + part2))
+aa2 / (1 + aa2)
+```
+## The result is shown belowed 
+The model parameter estimates
+$$
+\hat{\beta}_{0}=-1.555(\mathrm{SE} 0.280), \hat{\beta}_{1}=-0.155(\mathrm{SE} 0.068) \text { and } \hat{\lambda}=0.618(\mathrm{SE} 0.380)
+$$
+The estimated prevalence
+$$
+\begin{aligned}
+\hat{\operatorname{Pr}}\left(Y=1|X=0| Z=Z_{0}\right) &=\left.\operatorname{expit}\left(\hat{\beta}_{0}+\hat{\beta}_{1} X^{(\hat{\lambda})}+\hat{\eta}^{T} Z_{0}\right)\right|_{X=0, Z=Z_{0}} \\
+&=7.4 \%
+\end{aligned}
+$$
+where $Z_{0}$ consists of the means of continuous covariates and population proportions of categorical covariates representing the average population level. The corresponding $95 \%$ CI is $(0.047,0.114)$. This prevalence is close to the reported overall depression rate, $0.081$, for American adults aged 20 and over having depression in a given 2 -week period during 2013-2016 (Brody, Pratt \& Hughes, 2018).
